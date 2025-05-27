@@ -8,9 +8,10 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <switch>
-           <NavBar/>
-        </switch>
+         <NavBar />
+        <Routes>
+          
+        </Routes>
        
       </Router>
      
