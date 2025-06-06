@@ -6,6 +6,27 @@ import ProductRow  from './ProductRow';
 function ProductTable() {
     const { products, setProducts } = useContext(ProductContext);
 
+    const handleDelete=(id) => {
+      fetch("http://127.0.0.1:8000/product/" + id, {
+          method: "DELETE",
+          headers: {
+            accept: 'application/json'
+          }
+        })
+        .then(resp => {
+          if (resp.ok) {
+            setProducts(products.filter(product => product.id !== id));
+            alert("Product deleted successfully");
+          } else {
+            alert("Failed to delete product");
+          }
+        })
+        .catch(error => {
+          console.error("Error deleting product:", error);
+          alert("An error occurred while deleting the product");
+        });
+  };
+
     // Fetch products from the API when the component mounts
  useEffect(() => {
   fetch("http://127.0.0.1:8000/product")
@@ -40,6 +61,7 @@ function ProductTable() {
                sold = {product.quality_sold}
                revenue = {product.revenue}
                price = {product.unit_price}
+               handleDelete={handleDelete}
                 />
               )
 

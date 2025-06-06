@@ -5,15 +5,15 @@ import { redirect } from 'react-router-dom';
 const AddProduct=() =>{
     const [ProductInfo, setProductInfo] = React.useState({
         ProductName: '',
-        QuantityInStock: 0,
-        QuantitySold: 0,
-        UnitPrice: 0,
-        Revenue: 0,
-        Supplier: 0
+        QuantityInStock: '',
+        QuantitySold: '',
+        UnitPrice: '',
+        Revenue: '',
+        Supplier: ''
     });
 
     const updateForm = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target; //destructuring
         setProductInfo({
             ...ProductInfo,  // spereading the previous form data 
             [name]: value //name points to the filed and value to what is being input
@@ -23,7 +23,7 @@ const AddProduct=() =>{
 	function postData(event){
 		event.preventDefault();
 	
-	const url = 'http://127.0.0.1:8000/product' + ProductInfo['Supplier'];
+	const url = 'http://127.0.0.1:8000/product/' + ProductInfo['Supplier'];
 
 	fetch(url, {
 		method: 'POST',
@@ -31,32 +31,35 @@ const AddProduct=() =>{
 			'Content-Type': 'application/json',
 		},
 		mode: 'cors',
-		credentials: 'same-origin',
+		// credentials: 'same-origin',
 		redirect: 'follow',
 		referrerPolicy: 'no-referrer',
 		body: JSON.stringify({
-			ProductName: ProductInfo.ProductName,
-			QuantityInStock: ProductInfo.QuantityInStock,
-			QuantitySold: ProductInfo.QuantitySold,
-			UnitPrice: ProductInfo.UnitPrice,
-			Revenue: ProductInfo.Revenue,
-			Supplier: ProductInfo.Supplier
+			name: ProductInfo.ProductName,
+			quantity_in_stock: Number(ProductInfo.QuantityInStock),
+			quality_sold: Number(ProductInfo.QuantitySold),
+			unit_price: Number(ProductInfo.UnitPrice),
+			revenue: Number(ProductInfo.Revenue),
+			
+		
+		
 		}),
+		
 	})
 	.then((response) => {
 		if (response.ok) {
 			alert('Product added successfully');
 				setProductInfo({
 			ProductName: '',
-			QuantityInStock: 0,		
-			QuantitySold: 0,
-			UnitPrice: 0,	
-			Revenue: 0,
-			Supplier: 0
+			QuantityInStock: '',		
+			QuantitySold: '',
+			UnitPrice: '',	
+			Revenue: '',
+			Supplier: ''
 	});
 
 			// Use window.location instead of redirect from react-router-dom in this context
-			window.location.href = '/products';
+			window.location.href = '/';
 		} else {
 			alert('Failed to add product');
 		}
